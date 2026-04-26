@@ -1,3 +1,11 @@
+// LINE 1 — add this at the absolute top of the file:
+import java.util.Properties
+
+// ADD this block right after the import, before plugins {}:
+val localProps = Properties().apply {
+    rootProject.file("local.properties").inputStream().use { load(it) }
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -19,6 +27,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // ADD THIS — makes BuildConfig.GTFS_R_KEY available in your Kotlin code:
+        buildConfigField("String", "GTFS_R_KEY",
+            "\"${localProps["GTFS_R_KEY"]}\"")
     }
 
     buildTypes {
@@ -36,6 +47,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true    // ADD THIS LINE — must be true to use BuildConfig
     }
 }
 
@@ -55,4 +67,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 }
