@@ -49,6 +49,13 @@ android {
         compose = true
         buildConfig = true    // ADD THIS LINE — must be true to use BuildConfig
     }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/DEPENDENCIES"
+            excludes += "google/protobuf/*.proto"
+        }
+    }
 }
 
 dependencies {
@@ -69,4 +76,6 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+    implementation("com.google.protobuf:protobuf-java:3.25.3")
+    implementation("org.mobilitydata:gtfs-realtime-bindings:0.0.8")
 }
