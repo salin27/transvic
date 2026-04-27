@@ -26,7 +26,7 @@ object GtfsRService {
     fun fetchFeed(feedPath: String): FeedMessage {
         val request = Request.Builder()
             .url("$BASE$feedPath")
-            .header("KeyID", apiKey)
+            .header("KeyId", apiKey)
             .build()
 
         client.newCall(request).execute().use { response ->
