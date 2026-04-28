@@ -7,6 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.Train
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,12 +27,45 @@ class MainActivity : ComponentActivity() {
         setContent {
             TransvicTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    VehicleListScreen()
+                    TransvicApp()
                 }
             }
         }
     }
 }
+
+@Composable
+fun TransvicApp() {
+    var selectedTab by remember { mutableStateOf(0) }
+
+    Scaffold(
+        bottomBar = {
+            NavigationBar {
+                NavigationBarItem(
+                    selected = selectedTab == 0,
+                    onClick = { selectedTab = 0 },
+                    icon = { Icon(Icons.Default.Train, contentDescription = "Vehicles") },
+                    label = { Text("Vehicles") }
+                )
+                NavigationBarItem(
+                    selected = selectedTab == 1,
+                    onClick = { selectedTab = 1 },
+                    icon = { Icon(Icons.Default.Map, contentDescription = "Map") },
+                    label = { Text("Map") }
+                )
+            }
+        }
+    ) { innerPadding ->
+        Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+            when (selectedTab) {
+                0 -> VehicleListScreen()
+                1 -> MapScreen(modifier = Modifier.fillMaxSize())
+            }
+        }
+    }
+}
+
+// VehicleListScreen stays exactly the same as Phase 3 — paste it below here
 
 @Composable
 fun VehicleListScreen() {

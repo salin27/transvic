@@ -78,4 +78,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
     implementation("com.google.protobuf:protobuf-java:3.25.3")
     implementation("org.mobilitydata:gtfs-realtime-bindings:0.0.8")
+    implementation("org.osmdroid:osmdroid-android:6.1.18")
+    implementation("androidx.compose.material:material-icons-extended:1.6.8")
 }
