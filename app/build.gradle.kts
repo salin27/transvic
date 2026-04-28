@@ -9,6 +9,8 @@ val localProps = Properties().apply {
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.devtools.ksp") version "2.0.20-1.0.25"
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -56,6 +58,9 @@ android {
             excludes += "google/protobuf/*.proto"
         }
     }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
 
 dependencies {
@@ -80,4 +85,8 @@ dependencies {
     implementation("org.mobilitydata:gtfs-realtime-bindings:0.0.8")
     implementation("org.osmdroid:osmdroid-android:6.1.18")
     implementation("androidx.compose.material:material-icons-extended:1.6.8")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+    implementation("androidx.navigation:navigation-compose:2.7.7")
 }

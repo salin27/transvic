@@ -19,6 +19,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import au.id.transvic.ui.theme.TransvicTheme
+import androidx.compose.material.icons.filled.Search
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +41,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TransvicApp() {
     var selectedTab by remember { mutableStateOf(0) }
+    val navController = rememberNavController()
 
     Scaffold(
         bottomBar = {
@@ -44,12 +49,18 @@ fun TransvicApp() {
                 NavigationBarItem(
                     selected = selectedTab == 0,
                     onClick = { selectedTab = 0 },
-                    icon = { Icon(Icons.Default.Train, contentDescription = "Vehicles") },
-                    label = { Text("Vehicles") }
+                    icon = { Icon(Icons.Default.Search, contentDescription = "Search") },
+                    label = { Text("Search") }
                 )
                 NavigationBarItem(
                     selected = selectedTab == 1,
                     onClick = { selectedTab = 1 },
+                    icon = { Icon(Icons.Default.Train, contentDescription = "Vehicles") },
+                    label = { Text("Vehicles") }
+                )
+                NavigationBarItem(
+                    selected = selectedTab == 2,
+                    onClick = { selectedTab = 2 },
                     icon = { Icon(Icons.Default.Map, contentDescription = "Map") },
                     label = { Text("Map") }
                 )
@@ -58,8 +69,20 @@ fun TransvicApp() {
     ) { innerPadding ->
         Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
             when (selectedTab) {
-                0 -> VehicleListScreen()
-                1 -> MapScreen(modifier = Modifier.fillMaxSize())
+                0 -> NavHost(navController, startDestination = "search") {
+                    composable("search") {
+                        StopSearchScreen(onStopSelected = { stop ->
+                            navController.navigate("departures/${stop.stopId}/${stop.stopName}")
+                        })
+                    }
+                    composable("departures/{stopId}/{stopName}") { back ->
+                        // We'll build this screen in Phase 6
+                        Text("Departures coming in Phase 6!",
+                            modifier = Modifier.padding(16.dp))
+                    }
+                }
+                1 -> VehicleListScreen()
+                2 -> MapScreen(modifier = Modifier.fillMaxSize())
             }
         }
     }
